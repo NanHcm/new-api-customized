@@ -1,3 +1,9 @@
+> **Note (personal fork)**: This is a customized fork of [QuantumNous/new-api](https://github.com/QuantumNous/new-api).
+> See [**README.customized.md**](./README.customized.md) for the list of changes specific to this fork.
+> Everything below is the upstream README, kept verbatim.
+
+---
+
 <div align="center">
 
 ![new-api](/web/public/logo.png)
