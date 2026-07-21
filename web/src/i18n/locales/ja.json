@@ -1959,6 +1959,7 @@
     "Fill Related Models": "関連モデルを入力",
     "Fill Template": "テンプレートを入力",
     "Fill Templates": "テンプレートを入力",
+    "Fill the Base URL with the full provider-specific root (e.g. https://ark.cn-beijing.volces.com/api/plan/v3). The /v1 segment of OpenAI paths is stripped automatically.": "Base URLにプロバイダー固有のルート（例: https://ark.cn-beijing.volces.com/api/plan/v3）を入力してください。OpenAIパスの /v1 セグメントは自動的に削除されます。",
     "Fill the complete model value from the client request body, for example gpt-4o or gemini-2.5-flash. Separate multiple models with commas.": "クライアントリクエスト本文の完全な model 値を入力します。例: gpt-4o または gemini-2.5-flash。複数のモデルはカンマで区切ります。",
     "Fill thoughtSignature only for Gemini/Vertex channels using the OpenAI format": "OpenAI形式を利用するGemini/VertexチャネルにのみthoughtSignatureを付与します",
     "Filled {{count}} model(s)": "{{count}} 個のモデルを補完しました",

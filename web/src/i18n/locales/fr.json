@@ -1959,6 +1959,7 @@
     "Fill Related Models": "Remplir les modèles associés",
     "Fill Template": "Remplir le modèle",
     "Fill Templates": "Remplir les modèles",
+    "Fill the Base URL with the full provider-specific root (e.g. https://ark.cn-beijing.volces.com/api/plan/v3). The /v1 segment of OpenAI paths is stripped automatically.": "Renseignez l'URL racine complète du fournisseur (par ex. https://ark.cn-beijing.volces.com/api/plan/v3). Le segment /v1 des chemins OpenAI est automatiquement retiré.",
     "Fill the complete model value from the client request body, for example gpt-4o or gemini-2.5-flash. Separate multiple models with commas.": "Saisissez la valeur model complète du corps de requête client, par exemple gpt-4o ou gemini-2.5-flash. Séparez plusieurs modèles par des virgules.",
     "Fill thoughtSignature only for Gemini/Vertex channels using the OpenAI format": "Remplit thoughtSignature uniquement pour les canaux Gemini/Vertex utilisant le format OpenAI",
     "Filled {{count}} model(s)": "{{count}} modèle(s) rempli(s)",

@@ -144,6 +144,17 @@ export const CHANNEL_TYPE_CONFIGS: Record<number, ChannelTypeConfig> = {
       models: 'Models exposed by this channel',
     },
   },
+  59: {
+    id: 59,
+    name: CHANNEL_TYPES[59],
+    icon: 'openai',
+    hints: {
+      baseUrl:
+        'Full provider root, e.g. https://ark.cn-beijing.volces.com/api/plan/v3',
+      key: 'API key (Bearer token)',
+      models: 'Comma-separated model IDs from the upstream /models endpoint',
+    },
+  },
 }
 
 /**

@@ -1959,6 +1959,7 @@
     "Fill Related Models": "Điền Mô hình Liên quan",
     "Fill Template": "Điền Mẫu",
     "Fill Templates": "Điền mẫu",
+    "Fill the Base URL with the full provider-specific root (e.g. https://ark.cn-beijing.volces.com/api/plan/v3). The /v1 segment of OpenAI paths is stripped automatically.": "Điền URL gốc đầy đủ của nhà cung cấp vào Base URL (ví dụ: https://ark.cn-beijing.volces.com/api/plan/v3). Phân đoạn /v1 trong đường dẫn OpenAI được tự động loại bỏ.",
     "Fill the complete model value from the client request body, for example gpt-4o or gemini-2.5-flash. Separate multiple models with commas.": "Nhập đầy đủ giá trị model trong body yêu cầu của client, ví dụ gpt-4o hoặc gemini-2.5-flash. Ngăn cách nhiều model bằng dấu phẩy.",
     "Fill thoughtSignature only for Gemini/Vertex channels using the OpenAI format": "Điền thoughtSignature chỉ dành cho các kênh Gemini/Vertex sử dụng định dạng OpenAI",
     "Filled {{count}} model(s)": "Đã điền {{count}} mô hình",

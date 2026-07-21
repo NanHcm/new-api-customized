@@ -24,6 +24,17 @@ type HasImage interface {
 }
 
 func GetFullRequestURL(baseURL string, requestURL string, channelType int) string {
+	// OpenAI Compatible channels reuse the OpenAI adaptor but, like one-api's
+	// OpenAICompatible type, the user-supplied baseURL is treated as the
+	// canonical endpoint root: the leading "/v1" segment of the OpenAI
+	// request path is stripped before concatenation. This lets users fill in
+	// provider-specific roots such as "https://ark.cn-beijing.volces.com/api/plan/v3"
+	// and still use the standard OpenAI request flow.
+	if channelType == constant.ChannelTypeOpenAICompatible {
+		stripped := strings.TrimPrefix(requestURL, "/v1")
+		return fmt.Sprintf("%s%s", strings.TrimSuffix(baseURL, "/"), stripped)
+	}
+
 	fullRequestURL := fmt.Sprintf("%s%s", baseURL, requestURL)
 
 	if strings.HasPrefix(baseURL, "https://gateway.ai.cloudflare.com") {

@@ -56,7 +56,16 @@ const (
 	ChannelTypeReplicate      = 56
 	ChannelTypeCodex          = 57
 	ChannelTypeAdvancedCustom = 58
-	ChannelTypeDummy          // this one is only for count, do not add any channel after this
+	// ChannelTypeOpenAICompatible behaves like one-api's "OpenAI Compatible"
+	// channel type: the user-supplied base URL is used verbatim and the
+	// request path's "/v1" prefix is stripped before concatenation. This makes
+	// it work with non-standard OpenAI-compatible endpoints such as
+	//   - https://open.bigmodel.cn/api/paas/v4       (Zhipu regular API)
+	//   - https://ark.cn-beijing.volces.com/api/plan/v3 (VolcEngine Agent Plan)
+	//   - https://ark.cn-beijing.volces.com/api/coding/v3 (VolcEngine Coding Plan)
+	// without forcing the user to switch to the Custom channel type.
+	ChannelTypeOpenAICompatible = 59
+	ChannelTypeDummy            // this one is only for count, do not add any channel after this
 
 )
 
@@ -120,6 +129,7 @@ var ChannelBaseURLs = []string{
 	"https://api.replicate.com",                 //56
 	"https://chatgpt.com",                       //57
 	"",                                          //58
+	"",                                          //59
 }
 
 var ChannelTypeNames = map[int]string{
@@ -176,8 +186,9 @@ var ChannelTypeNames = map[int]string{
 	ChannelTypeDoubaoVideo:    "DoubaoVideo",
 	ChannelTypeSora:           "Sora",
 	ChannelTypeReplicate:      "Replicate",
-	ChannelTypeCodex:          "ChatGPT Subscription (Codex)",
-	ChannelTypeAdvancedCustom: "Advanced Custom",
+	ChannelTypeCodex:            "ChatGPT Subscription (Codex)",
+	ChannelTypeAdvancedCustom:   "Advanced Custom",
+	ChannelTypeOpenAICompatible: "OpenAI Compatible",
 }
 
 func GetChannelTypeName(channelType int) string {

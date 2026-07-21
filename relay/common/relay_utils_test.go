@@ -56,6 +56,79 @@ func TestSanitizeURLForLogKeepsURLWithoutSensitiveQuery(t *testing.T) {
 	assert.Equal(t, rawURL, got)
 }
 
+// TestGetFullRequestURLOpenAICompatibleStripsV1Prefix locks in the one-api
+// compatible behavior: when a user picks the OpenAI Compatible channel type
+// and fills in a non-standard root (e.g. the VolcEngine Agent Plan endpoint),
+// the leading "/v1" segment of the OpenAI request path must be stripped so
+// the final URL is correct instead of double-prefixed.
+func TestGetFullRequestURLOpenAICompatibleStripsV1Prefix(t *testing.T) {
+	tests := []struct {
+		name        string
+		baseURL     string
+		requestURL  string
+		channelType int
+		want        string
+	}{
+		{
+			name:        "agent plan root strips /v1/chat/completions",
+			baseURL:     "https://ark.cn-beijing.volces.com/api/plan/v3",
+			requestURL:  "/v1/chat/completions",
+			channelType: constant.ChannelTypeOpenAICompatible,
+			want:        "https://ark.cn-beijing.volces.com/api/plan/v3/chat/completions",
+		},
+		{
+			name:        "trailing slash on baseURL is trimmed",
+			baseURL:     "https://ark.cn-beijing.volces.com/api/plan/v3/",
+			requestURL:  "/v1/chat/completions",
+			channelType: constant.ChannelTypeOpenAICompatible,
+			want:        "https://ark.cn-beijing.volces.com/api/plan/v3/chat/completions",
+		},
+		{
+			name:        "zhipu coding paas v4 root strips /v1",
+			baseURL:     "https://open.bigmodel.cn/api/coding/paas/v4",
+			requestURL:  "/v1/chat/completions",
+			channelType: constant.ChannelTypeOpenAICompatible,
+			want:        "https://open.bigmodel.cn/api/coding/paas/v4/chat/completions",
+		},
+		{
+			name:        "standard OpenAI root still works",
+			baseURL:     "https://api.openai.com",
+			requestURL:  "/v1/chat/completions",
+			channelType: constant.ChannelTypeOpenAICompatible,
+			want:        "https://api.openai.com/chat/completions",
+		},
+		{
+			name:        "embeddings path strips /v1",
+			baseURL:     "https://ark.cn-beijing.volces.com/api/plan/v3",
+			requestURL:  "/v1/embeddings",
+			channelType: constant.ChannelTypeOpenAICompatible,
+			want:        "https://ark.cn-beijing.volces.com/api/plan/v3/embeddings",
+		},
+		{
+			name:        "path without /v1 prefix is unchanged",
+			baseURL:     "https://example.test/api/v3",
+			requestURL:  "/models",
+			channelType: constant.ChannelTypeOpenAICompatible,
+			want:        "https://example.test/api/v3/models",
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			got := GetFullRequestURL(tt.baseURL, tt.requestURL, tt.channelType)
+			assert.Equal(t, tt.want, got)
+		})
+	}
+}
+
+// TestGetFullRequestURLOpenAITypeStillConcatenatesVerbatim guards against
+// accidental regression: the plain OpenAI channel type must keep concatenating
+// baseURL + requestURL verbatim (it never stripped /v1).
+func TestGetFullRequestURLOpenAITypeStillConcatenatesVerbatim(t *testing.T) {
+	got := GetFullRequestURL("https://api.openai.com", "/v1/chat/completions", constant.ChannelTypeOpenAI)
+	assert.Equal(t, "https://api.openai.com/v1/chat/completions", got)
+}
+
 func TestValidateMultipartDirectNormalizesImageField(t *testing.T) {
 	gin.SetMode(gin.TestMode)
 	body := strings.NewReader(`{"model":"wan2.7-i2v","prompt":"animate","image":" https://example.com/first.png "}`)

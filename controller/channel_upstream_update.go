@@ -372,6 +372,10 @@ func fetchChannelUpstreamModelIDs(channel *model.Channel) ([]string, error) {
 
 	var url string
 	switch channel.Type {
+	case constant.ChannelTypeOpenAICompatible:
+		// User-supplied baseURL is the canonical root, so the OpenAI
+		// "/v1/models" path is rewritten to "/models" (strip the "/v1").
+		url = fmt.Sprintf("%s/models", strings.TrimSuffix(baseURL, "/"))
 	case constant.ChannelTypeAli:
 		url = fmt.Sprintf("%s/compatible-mode/v1/models", baseURL)
 	case constant.ChannelTypeZhipu_v4:

@@ -7,6 +7,10 @@ func ChannelType2APIType(channelType int) (int, bool) {
 	switch channelType {
 	case constant.ChannelTypeOpenAI:
 		apiType = constant.APITypeOpenAI
+	case constant.ChannelTypeOpenAICompatible:
+		// Reuses the OpenAI adaptor; URL shaping is handled in
+		// relaycommon.GetFullRequestURL and the OpenAI adaptor's GetRequestURL.
+		apiType = constant.APITypeOpenAI
 	case constant.ChannelTypeAnthropic:
 		apiType = constant.APITypeAnthropic
 	case constant.ChannelTypeBaidu:
