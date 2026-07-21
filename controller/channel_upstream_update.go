@@ -281,21 +281,6 @@ func parseOpenAIModelIDs(body []byte) ([]string, error) {
 	return ids, nil
 }
 
-// recommendedModelsForBaseURL returns a curated list of known-good model IDs
-// for subscription plans that don't expose a public /models endpoint (e.g.
-// VolcEngine Agent Plan). It trims a trailing slash from baseURL before the
-// lookup so users can fill the URL either way.
-func recommendedModelsForBaseURL(baseURL string) ([]string, bool) {
-	normalized := strings.TrimRight(strings.TrimSpace(baseURL), "/")
-	if normalized == "" {
-		return nil, false
-	}
-	if recommended, ok := constant.PlanRecommendedModels[normalized]; ok {
-		return normalizeModelNames(recommended), true
-	}
-	return nil, false
-}
-
 func sanitizeFetchModelsError(err error, key string) error {
 	if err == nil {
 		return nil
@@ -428,13 +413,6 @@ func fetchChannelUpstreamModelIDs(channel *model.Channel) ([]string, error) {
 
 	body, err := getFetchModelsResponseBody(http.MethodGet, url, channel, headers)
 	if err != nil {
-		// Some subscription plans (notably VolcEngine Agent Plan) do not expose
-		// a public /models endpoint, so the request returns 404. Fall back to a
-		// curated recommended-models list so users can still populate their
-		// channel from the UI. The fallback only triggers for known plan roots.
-		if recommended, ok := recommendedModelsForBaseURL(baseURL); ok {
-			return recommended, nil
-		}
 		return nil, sanitizeFetchModelsError(err, key)
 	}
 
