@@ -396,6 +396,65 @@ func TestNormalizeModelNames(t *testing.T) {
 	require.Equal(t, []string{"gpt-4o", "gpt-4.1"}, result)
 }
 
+// TestRecommendedModelsForBaseURLVolcEngineAgentPlan locks in the fallback
+// behavior: when a user fetches models on a known plan root that has no
+// public /models endpoint (VolcEngine Agent Plan), the controller returns a
+// curated list instead of the upstream 404.
+func TestRecommendedModelsForBaseURLVolcEngineAgentPlan(t *testing.T) {
+	tests := []struct {
+		name    string
+		baseURL string
+		wantLen int
+		wantHit bool
+		peekID  string
+	}{
+		{
+			name:    "agent plan root without trailing slash",
+			baseURL: "https://ark.cn-beijing.volces.com/api/plan/v3",
+			wantHit: true,
+			wantLen: 25,
+			peekID:  "doubao-seed-2-0-mini",
+		},
+		{
+			name:    "agent plan root with trailing slash",
+			baseURL: "https://ark.cn-beijing.volces.com/api/plan/v3/",
+			wantHit: true,
+			wantLen: 25,
+			peekID:  "doubao-seed-2-0-mini",
+		},
+		{
+			name:    "agent plan root with surrounding whitespace",
+			baseURL: "  https://ark.cn-beijing.volces.com/api/plan/v3  ",
+			wantHit: true,
+			wantLen: 25,
+			peekID:  "doubao-seed-2-0-mini",
+		},
+		{
+			name:    "unknown root returns no fallback",
+			baseURL: "https://api.openai.com",
+			wantHit: false,
+		},
+		{
+			name:    "empty baseURL returns no fallback",
+			baseURL: "",
+			wantHit: false,
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			got, ok := recommendedModelsForBaseURL(tt.baseURL)
+			require.Equal(t, tt.wantHit, ok, "hit mismatch")
+			if !tt.wantHit {
+				require.Nil(t, got)
+				return
+			}
+			require.Len(t, got, tt.wantLen)
+			require.Contains(t, got, tt.peekID)
+		})
+	}
+}
+
 func TestMergeModelNames(t *testing.T) {
 	result := mergeModelNames(
 		[]string{"gpt-4o", "gpt-4.1"},
