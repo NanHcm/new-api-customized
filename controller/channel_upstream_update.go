@@ -327,6 +327,13 @@ func getFetchModelsResponseBody(method string, requestURL string, channel *model
 	}
 	defer response.Body.Close()
 	if response.StatusCode != http.StatusOK {
+		// 404 almost always means the upstream plan root does not expose a
+		// /models endpoint at all (e.g. VolcEngine Agent Plan). Surface a
+		// hint instead of a bare status code so the user knows it is the
+		// upstream missing the endpoint, not a wrong key or base URL.
+		if response.StatusCode == http.StatusNotFound {
+			return nil, fmt.Errorf("status code: %d (上游未提供 /models 接口，请手动填写模型列表)", response.StatusCode)
+		}
 		return nil, fmt.Errorf("status code: %d", response.StatusCode)
 	}
 	return io.ReadAll(response.Body)
