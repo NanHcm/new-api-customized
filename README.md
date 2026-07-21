@@ -1,5 +1,9 @@
-> **Note (personal fork)**: This is a customized fork of [QuantumNous/new-api](https://github.com/QuantumNous/new-api).
-> See [**README.customized.md**](./README.customized.md) for the list of changes specific to this fork.
+> **个人 fork 说明**:这是 [QuantumNous/new-api](https://github.com/QuantumNous/new-api) 的定制版本。
+> 本 fork 的具体改动请见 [**README.customized.md**](./README.customized.md)。
+> 下方内容为上游原 README,保持原样未改动。
+>
+> **Personal fork**: customized version of [QuantumNous/new-api](https://github.com/QuantumNous/new-api).
+> See [**README.customized.md**](./README.customized.md) for fork-specific changes.
 > Everything below is the upstream README, kept verbatim.
 
 ---

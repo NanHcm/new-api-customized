@@ -1,6 +1,6 @@
-# new-api-customized
+# new-api 定制版
 
-个人定制版 [QuantumNous/new-api](https://github.com/QuantumNous/new-api),主要解决几个使用订阅类 AI 服务时遇到的痛点。
+[QuantumNous/new-api](https://github.com/QuantumNous/new-api) 的个人定制 fork,主要解决几个使用订阅类 AI 服务时遇到的痛点。
 
 完整功能、文档、UI 与上游保持一致,详见原项目 [README.md](./README.md)。
 
@@ -8,7 +8,7 @@
 
 ## 改了什么
 
-### 1. 新增 `OpenAI Compatible` 渠道类型(Type 59)
+### 1. 新增 `OpenAI Compatible`(OpenAI 兼容)渠道类型(Type 59)
 
 **问题**:上游 new-api 的 `OpenAI` 类型会强制在 base URL 后拼接 `/v1/chat/completions`,导致非标准 OpenAI 兼容端点(国内厂商常用 `/v3`、`/v4`、`/paas/v4` 等路径)全部 404。`one-api` 有专门的 "OpenAI 兼容" 类型会自动剥掉 `/v1` 前缀,但 new-api fork 时丢失了这段逻辑。
 
@@ -51,14 +51,17 @@
 ## 完整改动列表
 
 ```
-1a10da3 chore: drop .github/workflows for personal fork
-31e53aa fix(channels): clearer error when upstream plan has no /models endpoint
+2a2d804 docs: 添加 README.customized.md 描述 fork 改动
+1a10da3 chore: 删除个人 fork 不需要的 .github/workflows
+31e53aa fix(channels): 上游无 /models 接口时返回更明确的错误
 f9aad4f Revert: 不采用 fallback 推荐列表方案(保留真实错误)
 92b47cc feat: 改进 fetch_models 错误提示(已被 revert,改用方案 2)
-2d0b63e feat(channels): add OpenAI Compatible channel type (type 59)
+2d0b63e feat(channels): 新增 OpenAI Compatible 渠道类型(type 59)
 ```
 
 涉及 18 个文件,+166 行。
+
+---
 
 ## 验证测试
 
